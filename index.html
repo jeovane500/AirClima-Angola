@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AirClima Angola | Limpeza e Manutenção de Ar Condicionado em Luanda</title>
+  <meta name="description" content="Serviços profissionais de limpeza, manutenção e instalação de ar condicionado em Luanda. Atendimento rápido ao domicílio. Agende pelo WhatsApp!">
+
+  <!-- Google Fonts: Montserrat para títulos, Inter para corpo -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ============================================================
+       RESET & VARIÁVEIS GLOBAIS
+       Remove margens padrão e define as cores da marca
+    ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+
+    :root {
+      --navy:      #001F6B;   /* Azul marinho escuro — cor principal da marca */
+      --sky:       #00AAFF;   /* Azul celeste — cor secundária */
+      --ice:       #EAF6FF;   /* Branco gelo — fundo claro */
+      --gold:      #FFD700;   /* Dourado — botões de destaque e CTAs */
+      --white:     #FFFFFF;
+      --text-dark: #0A1628;   /* Quase preto — texto principal */
+      --text-mid:  #4A6080;   /* Cinza azulado — texto secundário */
+    }
+
+    html {
+      scroll-behavior: smooth; /* Rola suavemente ao clicar em links internos */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ============================================================
+       NAVBAR — Fixa no topo, sempre visível ao rolar
+    ============================================================ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: rgba(0, 31, 107, 0.92); /* Azul marinho semi-transparente */
+      backdrop-filter: blur(10px);         /* Desfoque de fundo (efeito vidro) */
+      border-bottom: 1px solid rgba(0, 170, 255, 0.2);
+    }
+
+    /* Logo dentro da navbar */
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .navbar-logo .snowflake-icon {
+      font-size: 24px;
+      filter: drop-shadow(0 0 8px var(--sky)); /* Brilho azul no ícone */
+    }
+
+    .navbar-logo span {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--white);
+      letter-spacing: 1px;
+    }
+
+    .navbar-logo span em {
+      color: var(--sky);
+      font-style: normal;
+    }
+
+    /* Botão "Agendar" na navbar */
+    .navbar-cta {
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .navbar-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    }
+
+    /* ============================================================
+       HERO SECTION — Primeira coisa que o utilizador vê
+       Fundo com gradiente azul escuro + imagem de ar condicionado
+    ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+
+      /* Gradiente escuro sobre fundo icy */
+      background:
+        linear-gradient(
+          160deg,
+          rgba(0, 10, 50, 0.97) 0%,
+          rgba(0, 31, 107, 0.90) 50%,
+          rgba(0, 80, 160, 0.85) 100%
+        ),
+        url('img/fundo2.jpg') center/cover no-repeat;
+    }
+
+    /* Canvas para os flocos de neve animados */
+    #snowCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; /* Não bloqueia cliques do utilizador */
+      z-index: 1;
+    }
+
+    /* Conteúdo central do hero */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      padding: 0 24px;
+    }
+
+    /* Ícone de floco grande no topo */
+    .hero-icon {
+      font-size: 64px;
+      display: block;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 20px rgba(0, 170, 255, 0.8));
+      animation: pulse-glow 3s ease-in-out infinite; /* Brilho pulsante */
+    }
+
+    /* Título principal do hero */
+    .hero-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(40px, 7vw, 80px); /* Tamanho responsivo */
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .hero-title span {
+      color: var(--sky); /* "CLIMA" em azul celeste */
+    }
+
+    /* Subtítulo do hero */
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: rgba(255,255,255,0.75);
+      margin: 16px 0 36px;
+      font-style: italic;
+    }
+
+    /* Botão principal do hero (dourado, brilhante) */
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      padding: 18px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 0 60px rgba(255, 215, 0, 0.7);
+    }
+
+    /* Seta de scroll para baixo */
+    .scroll-arrow {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      color: rgba(255,255,255,0.5);
+      font-size: 28px;
+      animation: bounce 1.8s infinite;
+    }
+
+    /* ============================================================
+       ANIMAÇÕES GLOBAIS
+    ============================================================ */
+
+    /* Brilho pulsante para o ícone do hero */
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 170, 255, 0.8)); }
+      50%       { filter: drop-shadow(0 0 40px rgba(0, 170, 255, 1)); }
+    }
+
+    /* Saltar para a seta de scroll */
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Entrada suave ao fazer scroll */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Classe aplicada via JavaScript ao entrar na viewport */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       SECTION — Estilos comuns a todas as secções
+    ============================================================ */
+    section {
+      padding: 100px 24px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.2;
+      color: var(--navy);
+    }
+
+    .section-title.light {
+      color: var(--white); /* Título claro para fundos escuros */
+    }
+
+    .section-sub {
+  margin-left: auto;
+  margin-right: auto;
+}
+    .section-sub {
+      font-size: 18px;
+      color: var(--text-mid);
+      margin-top: 12px;
+      max-width: 560px;
+    }
+
+    .section-sub.light {
+      color: rgba(255,255,255,0.65);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    /* ============================================================
+       SECTION 2 — PROBLEMA: Por que o AC sujo é perigoso?
+    ============================================================ */
+    .problem {
+      background: linear-gradient(180deg, #00102E 0%, #001F6B 100%);
+      text-align: center;
+    }
+
+    /* Grid dos três ícones de problema */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      max-width: 900px;
+      margin: 0 auto 64px;
+    }
+
+    /* Card individual do problema */
+    .problem-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(0, 170, 255, 0.2);
+      border-radius: 20px;
+      padding: 40px 24px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .problem-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 170, 255, 0.6);
+    }
+
+    .problem-card .emoji {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .problem-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .problem-card p {
+      color: rgba(255,255,255,0.55);
+      font-size: 15px;
+    }
+
+    /* Comparação Antes/Depois */
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: 700px;
+      margin: 0 auto 56px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .ba-panel {
+      position: relative;
+    }
+
+    .ba-panel img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Etiqueta "Antes" / "Depois" */
+    .ba-label {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(0,0,0,0.65);
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 6px 14px;
+      border-radius: 50px;
+    }
+
+    .ba-panel:last-child .ba-label {
+      background: rgba(0, 170, 255, 0.8); /* "Depois" em azul */
+    }
+
+    /* Linha divisória central */
+    .ba-divider {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: var(--gold);
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+
+    /* Texto de conclusão */
+    .solution-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(22px, 4vw, 36px);
+      color: var(--gold);
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    /* ============================================================
+       SECTION 3 — SERVIÇOS: Três cards com imagem e link WhatsApp
+    ============================================================ */
+    .services {
+      background: var(--ice);
+    }
+
+    /* Grid dos cards de serviços */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Card de serviço individual */
+    .service-card {
+      background: var(--white);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 31, 107, 0.10);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);          /* Levanta o card no hover */
+      box-shadow: 0 24px 60px rgba(0, 31, 107, 0.18);
+    }
+
+    /* Imagem do serviço com overlay gradiente */
+    .service-img-wrap {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .service-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .service-card:hover .service-img-wrap img {
+      transform: scale(1.06); /* Zoom suave na imagem no hover */
+    }
+
+    /* Overlay azul na imagem */
+    .service-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 31, 107, 0.6), transparent);
+    }
+
+    /* Ícone sobre a imagem */
+    .service-emoji {
+      position: absolute;
+      bottom: 14px;
+      left: 18px;
+      font-size: 32px;
+      z-index: 2;
+    }
+
+    /* Corpo do card de serviço */
+    .service-body {
+      padding: 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-body h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .service-body p {
+      color: var(--text-mid);
+      font-size: 15px;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    /* Botão de agendar dentro do card — leva ao WhatsApp */
+    .service-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.25s;
+      align-self: flex-start;
+    }
+
+    .service-btn:hover {
+      background: var(--sky);
+      transform: translateX(4px);
+    }
+
+    /* ============================================================
+       SECTION 4 — BENEFÍCIOS: Porquê escolher a AirClima?
+    ============================================================ */
+    .benefits {
+      background: var(--white);
+      text-align: center;
+    }
+
+    /* Grid dos benefícios */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Item individual de benefício */
+    .benefit-item {
+      padding: 40px 24px;
+      border-radius: 20px;
+      border: 2px solid var(--ice);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .benefit-item:hover {
+      border-color: var(--sky);
+      transform: translateY(-4px);
+    }
+
+    .benefit-icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .benefit-item h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .benefit-item p {
+      color: var(--text-mid);
+      font-size: 15px;
+    }
+
+    /* ============================================================
+       SECTION 5 — FOOTER CTA: Chamada final para ação
+    ============================================================ */
+    .footer-cta {
+      background: linear-gradient(135deg, #00102E 0%, #001F6B 60%, #0050A0 100%);
+      text-align: center;
+      padding: 100px 24px 60px;
+    }
+
+    .footer-cta h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 5vw, 52px);
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .footer-cta p {
+      color: rgba(255,255,255,0.6);
+      font-size: 18px;
+      margin-bottom: 48px;
+    }
+
+    /* Grupo de botões do footer */
+    .footer-btns {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+
+    /* Botão WhatsApp do footer */
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #25D366; /* Verde WhatsApp oficial */
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 18px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.35);
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(37, 211, 102, 0.5);
+    }
+
+    /* Botão de ligar do footer */
+    .btn-call {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 18px 36px;
+      border-radius: 50px;
+      border: 2px solid rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+
+    .btn-call:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Linha divisória do footer */
+    .footer-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 32px;
+    }
+
+    /* Info do rodapé: localização e copyright */
+    .footer-info {
+      color: rgba(255,255,255,0.35);
+      font-size: 14px;
+    }
+
+    .footer-info strong {
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ============================================================
+       BOTÃO FLUTUANTE DO WHATSAPP
+       Fixo no canto inferior direito em todas as páginas
+    ============================================================ */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      width: 60px;
+      height: 60px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
+      text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+      animation: float-pulse 3s ease-in-out infinite;
+    }
+
+    .whatsapp-float i {
+  color: white;
+  font-size: 28px;
+}
+
+    .whatsapp-float:hover {
+      transform: scale(1.15);
+      box-shadow: 0 10px 36px rgba(37, 211, 102, 0.7);
+    }
+    .fa-whatsapp {
+  color: #25D366;
+  font-size: 18px;
+}
+.btn-whatsapp i {
+  color: white;
+  font-size: 18px;
+}
+    /* Animação de pulso do botão flutuante */
+    @keyframes float-pulse {
+      0%, 100% { box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5); }
+      50%       { box-shadow: 0 6px 40px rgba(37, 211, 102, 0.8); }
+    }
+
+    /* ============================================================
+       RESPONSIVIDADE — Telemóvel (até 640px)
+    ============================================================ */
+    @media (max-width: 640px) {
+      .navbar { padding: 14px 20px; }
+      .navbar-logo span { font-size: 17px; }
+
+      .before-after { grid-template-columns: 1fr; }
+      .ba-panel:last-child { display: none; } /* Esconde "Depois" em mobile */
+
+      .footer-btns { flex-direction: column; align-items: center; }
+
+      section { padding: 72px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR — Fixo no topo com logo e botão de agendar
+  ============================================================ -->
+  <nav class="navbar">
+    <!-- Logo com link para o topo da página -->
+    <a href="#hero" class="navbar-logo">
+      <span class="snowflake-icon">❄️</span>
+      <span>Air<em>Clima</em> Angola</span>
+    </a>
+
+    <!-- Botão de agendar que abre o WhatsApp -->
+    <a href="https://wa.me/244953321332" target="_blank" class="navbar-cta">
+       Agendar Agora
+    </a>
+  </nav>
+
+  <!-- ============================================================
+       HERO SECTION — Ecrã completo com animação de neve e CTA
+  ============================================================ -->
+  <section class="hero" id="hero">
+
+    <!-- Canvas onde os flocos de neve são desenhados via JavaScript -->
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Conteúdo central: logo, título, subtítulo, botão -->
+    <div class="hero-content reveal">
+      <span class="hero-icon">❄️</span>
+
+      <h1 class="hero-title">
+        Air<span>Clima</span><br>Angola
+      </h1>
+
+      <p class="hero-sub">Ar puro, conforto garantido.</p>
+
+
+      <!-- Botão principal — leva ao WhatsApp sem mensagem pré-definida -->
+      <a href="https://wa.me/244953321332" target="_blank" class="hero-btn">
+         Agende Agora →
+      </a>
+    </div>
+
+    <!-- Seta animada a indicar scroll para baixo -->
+    <div class="scroll-arrow">↓</div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2 — PROBLEMA: Por que o AC sujo é perigoso?
+  ============================================================ -->
+  <section class="problem" id="problema">
+    <div class="section-header reveal">
+      <h2 class="section-title light">O seu ar condicionado está sujo?</h2>
+      <p class="section-sub light">Um AC sujo pode causar sérios problemas para a sua saúde e bolso.</p>
+    </div>
+
+    <!-- Três cards de problemas causados pelo AC sujo -->
+    <div class="problem-grid">
+
+      <!-- Card: Mau Cheiro -->
+      <div class="problem-card reveal">
+        <span class="emoji">🤢</span>
+        <h3>Mau Cheiro</h3>
+        <p>Bactérias e fungos acumulados no filtro libertam odores desagradáveis por toda a divisão.</p>
+      </div>
+
+      <!-- Card: Alergias -->
+      <div class="problem-card reveal">
+        <span class="emoji">🤧</span>
+        <h3>Alergias</h3>
+        <p>Pó, ácaros e esporos de mofo circulam no ar que respira, causando alergias e doenças respiratórias.</p>
+      </div>
+
+      <!-- Card: Alto Consumo de Energia -->
+      <div class="problem-card reveal">
+        <span class="emoji">⚡</span>
+        <h3>Alto Consumo de Energia</h3>
+        <p>Um AC sujo trabalha mais para arrefecer, aumentando o consumo de electricidade até 30%.</p>
+      </div>
+    </div>
+
+    <!-- Comparação visual: Antes vs Depois da limpeza -->
+    <div class="before-after reveal" style="position:relative;">
+
+      <!-- Linha dourada a dividir antes e depois -->
+      <div class="ba-divider"></div>
+
+      <!-- Painel ANTES: imagem de AC sujo -->
+      <div class="ba-panel">
+        <img
+          src="img/sujo.avif"
+          alt="Ar condicionado sujo — antes da limpeza"
+        />
+        <span class="ba-label">ANTES</span>
+      </div>
+
+      <!-- Painel DEPOIS: imagem de AC limpo -->
+      <div class="ba-panel">
+        <img
+          src="img/limpo2.webp"
+          alt="Ar condicionado limpo — depois da limpeza"
+        />
+        <span class="ba-label">DEPOIS</span>
+      </div>
+    </div>
+
+    <!-- Texto de transição para a secção de serviços -->
+    <p class="solution-text reveal" style="margin-top:56px;">
+       NÓS TEMOS A SOLUÇÃO!
+    </p>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3 — SERVIÇOS: Clicar leva ao WhatsApp com mensagem
+  ============================================================ -->
+  <section class="services" id="servicos">
+    <div class="section-header reveal">
+      <h2 class="section-title">Os Nossos Serviços</h2>
+      <p class="section-sub">Clique num serviço para agendar pelo WhatsApp.</p>
+    </div>
+
+    <!-- Grid com os três cards de serviços -->
+    <div class="services-grid">
+
+      <!-- CARD 1: Limpeza Profunda -->
+      <div class="service-card reveal">
+        <div class="service-img-wrap">
+          <!-- Imagem de técnico a fazer limpeza profunda -->
+          <img
+            src="img/limpeza.webp"
+            alt="Técnico a fazer limpeza profunda do ar condicionado"
+          />
+        </div>
+        <div class="service-body">
+          <h3>Limpeza Profunda</h3>
+          <p>Eliminamos toda a sujidade, bactérias e mau cheiro do seu ar condicionado com equipamento profissional.</p>
+          <!-- Botão que abre WhatsApp com mensagem já escrita sobre Limpeza Profunda -->
+          <a
+            href="https://wa.me/244953321332?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20Limpeza%20Profunda."
+            target="_blank"
+            class="service-btn"
+          >
+          <i class="fa-brands fa-whatsapp"></i>Agendar Agora
+          </a>
+        </div>
+      </div>
+
+      <!-- CARD 2: Manutenção Completa -->
+      <div class="service-card reveal">
+        <div class="service-img-wrap">
+          <!-- Imagem de técnico a inspecionar componentes do AC -->
+          <img
+            src="img/manutenção.jpeg"
+            alt="Técnico a fazer manutenção completa do ar condicionado"
+          />
+        
+        </div>
+        <div class="service-body">
+          <h3>Manutenção Completa</h3>
+          <p>Verificamos e corrigimos todos os componentes do seu equipamento para máximo desempenho e durabilidade.</p>
+          <!-- Botão que abre WhatsApp com mensagem já escrita sobre Manutenção Completa -->
+          <a
+            href="https://wa.me/244953321332?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20Manuten%C3%A7%C3%A3o%20Completa."
+            target="_blank"
+            class="service-btn"
+          >
+          <i class="fa-brands fa-whatsapp"></i> Agendar Agora
+          </a>
+        </div>
+      </div>
+
+      <!-- CARD 3: Instalação Profissional -->
+      <div class="service-card reveal">
+        <div class="service-img-wrap">
+          <!-- Imagem de técnico a instalar ar condicionado na parede -->
+          <img
+            src="img/instalação.webp"
+            alt="Técnico a instalar ar condicionado profissionalmente"
+          />
+          
+        </div>
+        <div class="service-body">
+          <h3>Instalação Profissional</h3>
+          <p>Instalamos o seu ar condicionado com total segurança, precisão e acabamento impecável.</p>
+          <!-- Botão que abre WhatsApp com mensagem já escrita sobre Instalação Profissional -->
+          <a
+            href="https://wa.me/244953321332?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20Instala%C3%A7%C3%A3o%20Profissional."
+            target="_blank"
+            class="service-btn"
+          >
+          <i class="fa-brands fa-whatsapp"></i> Agendar Agora
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4 — BENEFÍCIOS: Porquê escolher a AirClima?
+  ============================================================ -->
+  <section class="benefits" id="beneficios">
+    <div class="section-header reveal">
+      <h2 class="section-title">Porquê escolher a AirClima?</h2>
+    </div>
+
+    <!-- Grid com os três benefícios principais -->
+    <div class="benefits-grid">
+
+      <!-- Benefício 1: Atendimento ao Domicílio -->
+      <div class="benefit-item reveal">
+        <span class="benefit-icon">🏠</span>
+        <h3>Atendimento ao Domicílio</h3>
+        <p>Vamos até à sua casa ou escritório em Luanda. Sem deslocações, sem complicações.</p>
+      </div>
+
+      <!-- Benefício 2: Serviço Rápido e Seguro -->
+      <div class="benefit-item reveal">
+        <span class="benefit-icon">⚡</span>
+        <h3>Serviço Rápido e Seguro</h3>
+        <p>Técnicos qualificados e experientes que respeitam o seu espaço e o seu tempo.</p>
+      </div>
+
+      <!-- Benefício 3: Preço Acessível -->
+      <div class="benefit-item reveal">
+        <span class="benefit-icon">💰</span>
+        <h3>Preço Acessível</h3>
+        <p>Qualidade premium sem pesar no bolso. Orçamento sem compromisso.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER CTA — Chamada final para ação e contactos
+  ============================================================ -->
+  <footer class="footer-cta" id="contacto">
+
+    <h2 class="reveal">Pronto para respirar ar puro?</h2>
+    <p class="reveal">Contacte-nos agora e agende o seu serviço!</p>
+
+    <!-- Dois botões: WhatsApp e Ligar -->
+    <div class="footer-btns reveal">
+
+      <!-- Abre o WhatsApp directamente -->
+      <a href="https://wa.me/244953321332" target="_blank" class="btn-whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+      </a>
+
+      <!-- Liga para o número de telefone -->
+      <a href="tel:+244941793913" class="btn-call">
+        📞 941 793 913
+      </a>
+
+    </div>
+
+    <hr class="footer-divider" />
+
+    <!-- Informações de localização e copyright -->
+    <p class="footer-info">
+      📍 <strong>Luanda, Angola</strong> &nbsp;|&nbsp; © 2026 AirClima Angola. Todos os direitos reservados.
+    </p>
+
+  </footer>
+
+  <!-- ============================================================
+       BOTÃO FLUTUANTE WHATSAPP
+       Sempre visível no canto inferior direito
+  ============================================================ -->
+  <a
+  href="https://wa.me/244953321332"
+  target="_blank"
+  class="whatsapp-float"
+  aria-label="Contactar pelo WhatsApp"
+>
+<i class="fa-brands fa-whatsapp"></i>
+</a>
+
+  <!-- ============================================================
+       JAVASCRIPT — Animações e interactividade
+  ============================================================ -->
+  <script>
+    // ============================================================
+    // ANIMAÇÃO DE FLOCOS DE NEVE NO HERO
+    // Desenha flocos brancos a cair suavemente no canvas
+    // ============================================================
+    const canvas = document.getElementById('snowCanvas');
+    const ctx    = canvas.getContext('2d');
+
+    // Redimensiona o canvas ao tamanho da janela
+    function resizeCanvas() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Cria um array de flocos com posição e velocidade aleatórias
+    const flakes = Array.from({ length: 80 }, () => ({
+      x:      Math.random() * window.innerWidth,
+      y:      Math.random() * window.innerHeight,
+      r:      Math.random() * 3 + 1,        // Raio (tamanho do floco)
+      speed:  Math.random() * 0.8 + 0.3,   // Velocidade de queda
+      drift:  Math.random() * 0.4 - 0.2,   // Deriva lateral
+      alpha:  Math.random() * 0.5 + 0.2,   // Transparência
+    }));
+
+    // Função de animação dos flocos — chamada em loop pelo requestAnimationFrame
+    function animateSnow() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+
+      flakes.forEach(f => {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${f.alpha})`;
+        ctx.fill();
+
+        // Move o floco para baixo e levemente para os lados
+        f.y += f.speed;
+        f.x += f.drift;
+
+        // Quando o floco sai do ecrã, volta ao topo numa posição aleatória
+        if (f.y > canvas.height) {
+          f.y = -10;
+          f.x = Math.random() * canvas.width;
+        }
+      });
+
+      requestAnimationFrame(animateSnow); // Chama o próximo frame
+    }
+    animateSnow(); // Inicia a animação
+
+    // ============================================================
+    // REVEAL AO FAZER SCROLL
+    // Adiciona a classe "visible" aos elementos com classe "reveal"
+    // quando eles entram na viewport (área visível do ecrã)
+    // ============================================================
+    const revealEls = document.querySelectorAll('.reveal');
+
+    // IntersectionObserver observa cada elemento e activa quando visível
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible'); // Activa a animação CSS
+        }
+      });
+    }, { threshold: 0.15 }); // Activa quando 15% do elemento está visível
+
+    // Adiciona o observer a cada elemento com classe "reveal"
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
